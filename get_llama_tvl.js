@@ -12,7 +12,8 @@ const get_llama_tvl = async (postgresPool) => {
             const res = await axios.get(`${config.endpoints.defillama}`, {});
       
             if(res?.data){
-                console.log(`llama tvl: ${res.data}`)
+                console.log(`llama tvl: ${res.data}`);
+                const tvl_int = Math.round(res.data);
 
                 const updateQuery = `
                     UPDATE fusion_stats 
@@ -20,7 +21,7 @@ const get_llama_tvl = async (postgresPool) => {
                     WHERE id = $2
                 `;
 
-                const updateValues = [res.data, 0];
+                const updateValues = [tvl_int, 0];
                 await postgresClient.query(updateQuery, updateValues);
 
                 console.log(`Updated llama tvl`);
