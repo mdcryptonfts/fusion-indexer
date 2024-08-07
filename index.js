@@ -1,10 +1,9 @@
-//const { Pool } = require('pg');
+const { Pool } = require('pg');
 const config = require('./config.json');
 const { get_llama_tvl } = require('./get_llama_tvl')
 const { get_holder_count } = require('./get_holder_count')
 const { get_wax_price } = require('./get_wax_price')
 
-/*
 const postgresPool = new Pool({
     user: config.postgres.user,
     host: config.postgres.host,  
@@ -13,14 +12,11 @@ const postgresPool = new Pool({
     port: config.postgres.port,      
     max: config.postgres.max,      
 });
-*/
+
 
 const runApp = async () => {
 
     console.log("Fusion Indexer is running")
-
-    // testing
-    let postgresPool = null;
 
     /**
      * @get_llama_tvl
