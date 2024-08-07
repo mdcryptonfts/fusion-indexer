@@ -1,0 +1,9 @@
+.env
+config.json
+*.pid
+*.log
+*.md
+!README.md
+
+# Dependencies
+/node_modules
