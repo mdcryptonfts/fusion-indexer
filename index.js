@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const redis = require('redis');
 const config = require('./config.json');
 const { get_llama_tvl } = require('./get_llama_tvl')
 const { get_holder_count } = require('./get_holder_count')
@@ -16,6 +17,12 @@ const postgresPool = new Pool({
 
 
 const runApp = async () => {
+
+    const client = redis.createClient({host: config.redis.host, port: config.redis.port});
+    await client.connect();
+
+    const subscriber = client.duplicate();
+    await subscriber.connect();    
 
     console.log("Fusion Indexer is running")
 
@@ -63,8 +70,21 @@ const runApp = async () => {
 
     setInterval(() => get_wax_price(postgresPool), 60 * 1000);   // every minute
 
+
+    /**
+     * @table_deltas
+     * 
+     * Testing, not for production use yet
+     */
+
+    await subscriber.subscribe('ship::wax::tabledeltas/name/contract_table', async (message) => {
+        console.log(message)
+    })           
+
                   
     process.on('SIGINT', () => {
+        client.quit();
+        subscriber.quit();        
         process.exit();
     }); 
     
