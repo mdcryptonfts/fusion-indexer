@@ -77,7 +77,7 @@ const runApp = async () => {
      * Testing, not for production use yet
      */
 
-    await subscriber.subscribe('ship::wax::tabledeltas/name/contract_table', async (message) => {
+    await subscriber.subscribe('ship::wax::tabledeltas/name/contract_row', async (message) => {
         console.log(message)
     })           
 
