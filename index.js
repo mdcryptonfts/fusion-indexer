@@ -80,7 +80,6 @@ const runApp = async () => {
     await subscriber.subscribe('ship::wax::tabledeltas/name/contract_row', async (message) => {
         
         try{
-            console.log(`\n\n${message}`)
             const rows = JSON.parse(message).rows;
 
             for(const r of rows){
