@@ -78,7 +78,21 @@ const runApp = async () => {
      */
 
     await subscriber.subscribe('ship::wax::tabledeltas/name/contract_row', async (message) => {
-        console.log(message)
+        
+        try{
+            const m = JSON.parse(message);
+            const d = m.data;
+
+            if(m.present && d?.code == config.contracts.dapp){
+                console.log(`table: ${d.table}`)
+                console.log(`value: ${d.value}`)
+                console.log(`raw: ${m.raw_data}`)
+            }
+
+        } catch (e) {
+            console.log(`unable to decode table delta`);
+        }
+
     })           
 
                   
