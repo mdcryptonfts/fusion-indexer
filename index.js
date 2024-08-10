@@ -81,13 +81,16 @@ const runApp = async () => {
         
         try{
             console.log(`\n\n${message}`)
-            const m = JSON.parse(message);
-            const d = m.data;
+            const rows = JSON.parse(message).rows;
 
-            if(m.present && d?.code == config.contracts.dapp){
-                console.log(`table: ${d.table}`)
-                console.log(`value: ${d.value}`)
-                console.log(`raw: ${m.raw_data}`)
+            for(const r of rows){
+                const d = r.data;
+
+                if(r.present && d?.code == config.contracts.dapp){
+                    console.log(`table: ${d.table}`)
+                    console.log(`value: ${d.value}`)
+                    console.log(`raw: ${r.raw_data}`)
+                }
             }
 
         } catch (e) {
