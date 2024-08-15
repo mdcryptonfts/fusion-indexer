@@ -87,8 +87,8 @@ const runApp = async () => {
 
                 if(r.present && d?.code == config.contracts.dapp){
                     console.log(`table: ${d.table}`)
-                    console.log(`value: ${d.value}`)
-                    console.log(`raw: ${r.raw_data}`)
+                    console.log(`value:`)
+                    console.log(d.value)
                 }
             }
 
