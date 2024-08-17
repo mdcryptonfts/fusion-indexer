@@ -11,7 +11,7 @@ const get_llama_tvl = async (postgresPool) => {
         try {
             const res = await axios.get(`${config.endpoints.defillama}?_=${new Date().getTime()}`, {
                 headers: {
-                    'Cache-Control': 'no-cache',
+                    'Cache-Control': 'no-store',
                     'Pragma': 'no-cache',
                     'Expires': '0'
                 }                
