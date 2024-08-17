@@ -9,7 +9,7 @@ const get_llama_tvl = async (postgresPool) => {
         postgresClient = await postgresPool.connect();
 
         try {
-            const res = await axios.get(`${config.endpoints.defillama}`, {
+            const res = await axios.get(`${config.endpoints.defillama}?_=${new Date().getTime()}`, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
