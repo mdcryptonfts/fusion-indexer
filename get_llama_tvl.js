@@ -1,8 +1,27 @@
 const config = require('./config.json');
 const axios = require('axios');
+const { get_account_tvl } = require('./eos');
+
+async function wax() {
+  const accounts = ["dapp.fusion", "pol.fusion", "cpu1.fusion", "cpu2.fusion", "cpu3.fusion"];
+  const tokens = [
+      ["eosio.token", "WAX", "wax"]
+  ];
+  return await get_account_tvl(accounts, tokens, "wax");
+}
 
 const get_llama_tvl = async (postgresPool) => {
     let postgresClient = null;
+
+    try{
+        const tvl = await wax();
+
+        console.log("new tvl:")
+        console.log(tvl)
+
+    } catch (e) {
+        console.log(`error getting tvl: ${e}`)
+    }
 
     try{
 
