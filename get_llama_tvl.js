@@ -14,59 +14,44 @@ const get_llama_tvl = async (postgresPool) => {
     let postgresClient = null;
 
     try{
-        const tvl = await wax();
-
-        console.log("new tvl:")
-        console.log(tvl)
-
-    } catch (e) {
-        console.log(`error getting tvl: ${e}`)
-    }
-
-    try{
 
         postgresClient = await postgresPool.connect();
 
         try {
-            const res = await axios.get(`${config.endpoints.defillama}?_=${new Date().getTime()}`, {
-                headers: {
-                    'Cache-Control': 'no-store',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
-                }                
-            });
-      
-            if(res?.data){
-                console.log(`llama tvl: ${res.data}`);
-                const tvl_int = Math.round(res.data);
+
+            const tvl = await wax();          
+
+            if(tvl?.wax){
+
+                console.log(`tvl: ${tvl.wax}`)  
 
                 const updateQuery = `
                     UPDATE fusion_stats 
-                    SET tvl_usd = $1
+                    SET tvl_wax = $1
                     WHERE id = $2
                 `;
 
-                const updateValues = [tvl_int, 0];
+                const updateValues = [Math.round(tvl.wax), 0];
                 await postgresClient.query(updateQuery, updateValues);
 
-                console.log(`Updated llama tvl`);
+                console.log(`Updated tvl`);
 
             }         
 
         } catch (e) {
-            console.log(`error making api call to llama: ${e}`);
+            console.log(`error updating tvl: ${e}`);
         }
 
 
 
     
     } catch (e) {
-        console.log(`error executing get_llama_tvl: ${e}`);
+        console.log(`error executing tvl update: ${e}`);
     } finally {
         if (postgresClient) {
             postgresClient.release();
         }
-    }    
+    }   
 }
 
 module.exports = {

@@ -12,8 +12,8 @@ async function getEosBalance(account_name, chain = "eos") {
 
 async function get_currency_balance(code, account, symbol, chain = "eos") {
     const data = await axios.post(`${RPC_ENDPOINTS[chain]}/v1/chain/get_currency_balance`, { code, account, symbol })
-    if (!data.length) return 0
-    return Number(data[0].split(" ")[0]);
+    if (!data.data.length) return 0
+    return Number(data.data[0].split(" ")[0]);
 }
 
 /**
@@ -40,7 +40,7 @@ function get_precision(symbol) {
 async function get_staked(account_name, symbol, chain = "eos") {
     const response = await axios.post(`${RPC_ENDPOINTS[chain]}/v1/chain/get_account`, { account_name })
     try {
-        return response.voter_info.staked / (10 ** get_precision(symbol))
+        return response.data.voter_info.staked / (10 ** get_precision(symbol))
     } catch (e) {
         return 0;
     }
