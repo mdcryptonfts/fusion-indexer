@@ -9,7 +9,13 @@ const get_llama_tvl = async (postgresPool) => {
         postgresClient = await postgresPool.connect();
 
         try {
-            const res = await axios.get(`${config.endpoints.defillama}`, {});
+            const res = await axios.get(`${config.endpoints.defillama}`, {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }                
+            });
       
             if(res?.data){
                 console.log(`llama tvl: ${res.data}`);
